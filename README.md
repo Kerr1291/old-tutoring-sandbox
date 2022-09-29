@@ -1,2 +1,2 @@
-# old-tutoring-sandbox
-Sandbox that was used when I wasked asked to give some lectures and demos at our local community college
+# A sandbox / template project that I created for a local community college CS course tutorial
+I was asked by our local community college to present, lecture, and demo some real time programming topics
