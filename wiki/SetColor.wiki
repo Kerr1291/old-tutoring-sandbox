@@ -1,0 +1,8 @@
+#summary Sets the color of a RenderObject
+
+= SetColor =
+
+{{{
+        void SetColor(vec4 rgba);
+        void SetColor(float r, float g, float b, float a = 1.0f);
+}}}

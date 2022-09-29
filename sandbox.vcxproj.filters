@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Sources\App">
+      <UniqueIdentifier>{26b32f54-4a3e-4bc2-bac0-73bdff66fdf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Sandbox">
+      <UniqueIdentifier>{2bf4baa3-3e3f-4f7a-907c-81ca2731a4f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Sandbox\Graphics">
+      <UniqueIdentifier>{847e3bdc-f009-42b7-bcc4-21e06d024463}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Sandbox\SandboxHUD">
+      <UniqueIdentifier>{a6c59434-8eb0-4a5b-ac8f-d4a35b96af45}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Sources\App</Filter>
+    </ClCompile>
+    <ClCompile Include="Parser.cpp">
+      <Filter>Sources\App</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Sources\Sandbox</Filter>
+    </ClCompile>
+    <ClCompile Include="Sandbox.cpp">
+      <Filter>Sources\Sandbox</Filter>
+    </ClCompile>
+    <ClCompile Include="SandboxGlobals.cpp">
+      <Filter>Sources\Sandbox</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Sources\Sandbox</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicData.cpp">
+      <Filter>Sources\Sandbox\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderManager.cpp">
+      <Filter>Sources\Sandbox\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderObject.cpp">
+      <Filter>Sources\Sandbox\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>Sources\Sandbox\SandboxHUD</Filter>
+    </ClCompile>
+    <ClCompile Include="HUDManager.cpp">
+      <Filter>Sources\Sandbox\SandboxHUD</Filter>
+    </ClCompile>
+    <ClCompile Include="HUDObject.cpp">
+      <Filter>Sources\Sandbox\SandboxHUD</Filter>
+    </ClCompile>
+    <ClCompile Include="SandboxHUD.cpp">
+      <Filter>Sources\Sandbox\SandboxHUD</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Parser.h">
+      <Filter>Sources\App</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Sources\Sandbox</Filter>
+    </ClInclude>
+    <ClInclude Include="Sandbox.h">
+      <Filter>Sources\Sandbox</Filter>
+    </ClInclude>
+    <ClInclude Include="SandboxGlobals.h">
+      <Filter>Sources\Sandbox</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Sources\Sandbox</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicData.h">
+      <Filter>Sources\Sandbox\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderManager.h">
+      <Filter>Sources\Sandbox\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderObject.h">
+      <Filter>Sources\Sandbox\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>Sources\Sandbox\SandboxHUD</Filter>
+    </ClInclude>
+    <ClInclude Include="HUDManager.h">
+      <Filter>Sources\Sandbox\SandboxHUD</Filter>
+    </ClInclude>
+    <ClInclude Include="HUDObject.h">
+      <Filter>Sources\Sandbox\SandboxHUD</Filter>
+    </ClInclude>
+    <ClInclude Include="SandboxHUD.h">
+      <Filter>Sources\Sandbox\SandboxHUD</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

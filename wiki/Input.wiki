@@ -1,0 +1,45 @@
+#summary How to manage input with the sandbox.
+
+= Input =
+
+Processing input with the sandbox is fairly straightforward.
+
+I will show a few examples.
+
+
+=== Example: Respond to a key *press* ===
+{{{  
+        if( Global::Keyboard::KeyPressed('8') )
+        {
+                External::camera->ClearTarget();
+        }
+}}}
+
+=== Example: Respond to *holding a key down* ===
+{{{  
+        static vec3 pos(0,0,0);
+        if( Global::Keyboard::KeyHeld('a') )
+        {
+                pos.x += 0.1f;
+        }
+        if( Global::Keyboard::KeyHeld('d') )
+        {
+                pos.x -= 0.1f;
+        }
+}}}
+
+=== Example: Respond to *holding the right mouse button down* ===
+{{{
+        if( Global::Mouse::ButtonStates & Button::RIGHT_HELD )
+        {
+                if( fabs( Global::Mouse::FrameDelta.x ) > Global::ZERO )
+                        Rotate( -Global::Mouse::FrameDelta.x*2, up );
+                if( fabs( Global::Mouse::FrameDelta.y ) > Global::ZERO )
+                        Rotate( Global::Mouse::FrameDelta.y*2, glm::cross(forward,up) );
+        }
+}}}
+I will explain this example because there's a bit more going on here.
+
+This is taken from Camera.cpp and is how you 'look' around using the right mouse button. What we are doing here is checking to see if the right mouse button is held down by comparing the `Button::RIGHT_HELD` state with the current state of the mouse, which is stored in `Global::Mouse::ButtonStates`. We do this by doing a binary `and`. 
+
+After discovering that the mouse button is being held down, we may query the mouse's delta to see if it moved at all during this previous frame. If the mouse moved (ie. if the delta is greater than zero) we simply rotate our camera the appropriate direction.

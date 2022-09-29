@@ -1,0 +1,137 @@
+#summary A description of the global variables used by the sandbox.
+
+= SandboxGlobals =
+
+This page should help you understand what all this stuff is for!
+
+
+=== typedefs and includes ===
+
+{{{
+//3rd party stuff (Math library)
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp> // for the value_ptr function
+
+//standard stuff
+#include <iostream>
+#include <math.h>
+#include <vector>
+
+//typedefs
+typedef glm::vec2 vec2;
+typedef glm::mat2 mat2;
+typedef glm::vec3 vec3;
+typedef glm::mat3 mat3;
+typedef glm::vec4 vec4;
+typedef glm::mat4 mat4;
+typedef unsigned char truth;
+}}}
+Aside from the standard stuff, the "3rd party stuff" is the math library the sandbox uses. To make many things easier to type I have typedef'd the glm:: vectors and matrices. This also allows you to fairly easily substitute your own math library in if it contains similar functionality. 
+
+The `typedef unsigned char truth;` line I have as a personal preference. You will find my functions throughout the sandbox that return type `truth` instead of return type `bool`. I prefer to work with 0 and 1 instead of `false` and `true` of `bool`. However, it is typedef'd so if you prefer to work with bool just change the `unsigned char` line to `bool` and everything should be like you expect.
+
+----
+=== External namespace ===
+{{{
+namespace External
+{
+        //Variables that allow access to other places in the sandbox
+        extern Camera* camera;
+        extern RenderManager* renderer;
+        extern Sandbox* sandbox;
+}
+}}}
+These are the global pointers to each major system in the sandbox. Since most things include this file you should have access to any of the major systems through the `External::` namespace.
+
+----
+=== Button namespace ===
+
+{{{
+namespace Button
+{
+        typedef unsigned char buttontype;
+        const buttontype LEFT_DOWN = 1;
+        const buttontype RIGHT_DOWN = 2;
+        const buttontype MIDDLE_DOWN = 4;
+        const buttontype LEFT_HELD = 8;
+        const buttontype RIGHT_HELD = 16;
+        const buttontype LEFT_UP = 32;
+        const buttontype RIGHT_UP = 64;
+        const buttontype MIDDLE_UP = 128;
+}
+}}}
+These are definitions for the buttons I have defined for the mouse functionality. To see how to use them with input go check out the Input wiki page.
+
+----
+=== Debug namespace ===
+{{{
+
+namespace Debug
+{
+        namespace Internal
+        {
+                void PrintStrings();
+        }
+
+        //Warning: These are *slow*
+    void printf(int x, int y, const char* string, ...);
+    void printf3D(float x, float y, float z, const char* string, ...);
+}
+}}}
+These are the debug functions I have provided to give you some onscreen debug text when you really need it. Unfortunately due to the way the text is processed, these will greatly slow down your frame rate, so only use them when you really really need some on-screen text in a jiffy. 
+
+As a side note: you should never need to touch the `PrintStrings()` function as it is called internally to make the `printf` and `printf3D` work.
+
+----
+=== Global namespace ===
+{{{
+namespace Global
+{
+        //////////////////////////////////////////////////
+        //global consts
+        const float PI = 3.141592f;
+        const float TINY = 0.001f;
+        const float ZERO = 0.000001f;
+
+        //////////////////////////////////////////////////
+        ///global variables
+        namespace Window
+        {
+                extern unsigned Width;
+                extern unsigned Height;
+        }
+
+        namespace Mouse
+        {
+                extern vec2 ScreenPos;
+                extern vec2 FrameDelta;
+                extern Button::buttontype ButtonStates;
+        }
+
+        namespace Keyboard
+        {
+                bool KeyPressed(unsigned char key);
+                bool KeyReleased(unsigned char key);
+                bool KeyHeld(unsigned char key);
+                extern bool KeyState[256];
+                extern bool KeyStateChange[256];
+        }
+
+        extern truth DebugState;
+
+        //////////////////////////////////////////////////
+        //global functions
+        void SetDebugMode(truth state);
+
+        //Get a 0-1 float (This is a pretty mediocre way to do it, but it works fine).
+        inline float GetRandomFloat() { return (float)(rand()%10001)/10000.0f; }
+
+}
+}}}
+These are general global consts, variables, and input functions for the keyboard.
+
+Some important things to know:
+
+  * You should only _read_ the data stored in the `Window`, `Mouse`, and `Keyboard` namespaces.
+  * The `DebugState` should be set through the `SetDebugMode` function.
+  * By default, calling `SetDebugMode()` will set the camera to the same debug mode. If you don't want that to happen, feel free to edit the function in SandboxGlobals.cpp

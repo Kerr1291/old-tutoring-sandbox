@@ -1,0 +1,66 @@
+#summary Info about the camera class
+
+= Camera =
+
+This page will explain how to use the Camera class and how the default sandbox camera functions.        
+
+[http://code.google.com/p/tmcc-sandbox/source/browse/trunk/sandbox/Camera.h Camera.h]
+
+== Default Settings ==
+
+When the sandbox loads it creates a camera by default in 
+[http://code.google.com/p/tmcc-sandbox/source/browse/trunk/sandbox/Sandbox.cpp Sandbox.cpp] and a pointer to this camera is then stored in [http://code.google.com/p/tmcc-sandbox/source/browse/trunk/sandbox/SandboxGlobals.h SandboxGlobals.h] which is included by most everything in the project. 
+
+The following example shows how you would access the camera from another file, like [http://code.google.com/p/tmcc-sandbox/source/browse/trunk/sandbox/Scene.cpp Scene.cpp]
+
+{{{
+External::camera->SetPos(0,0,0);
+}}}
+
+== Functions of the camera ==
+
+   
+   === Camera Tracking ===
+Aside from normal manual controls like setting and modifying the position, the camera also has the ability to automatically "follow" a target.
+
+If you call 
+{{{ 
+void SetTarget(RenderObject* t) 
+}}} 
+and pass in an object's 
+{{{
+RenderObject
+}}} 
+the camera will move to and face the object until a new target is set, or the tracking is disabled with 
+{{{
+void ClearTarget()
+}}}
+
+
+If you tell the camera to enter it's alternate mode, which we call "Debug Mode" with 
+{{{
+void SetDebugMode(1)
+}}} 
+the camera will save the target it is currently tracking. 
+Then when 
+{{{
+void SetDebugMode(0)
+}}} 
+is called again, it will resume tracking its previous target.
+
+
+   === Camera Tracking Example ===
+Here we respond to pressing the keys 7 and 8 to track and untrack a target we call "steve".
+{{{
+        //We are assuming that we found steve ok and r != null
+        RenderObject* r = External::renderer->FindRenderObject("steve");
+        if( Global::Keyboard::KeyPressed('7') )
+        {              
+            External::camera->SetTarget( r );       
+        }
+        if( Global::Keyboard::KeyPressed('8') )
+        {
+            External::camera->ClearTarget();
+        }
+}}}
+Simple!

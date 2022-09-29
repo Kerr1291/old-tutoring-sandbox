@@ -1,0 +1,22 @@
+#summary Misc info about the sandbox.
+
+= Introduction =
+
+Welcome to the Truckee Meadows Community College (TMCC) physics engine sandbox. This is all very new so please be patient as things are developed.
+
+= Setup =
+
+TODO: How to install and configure the sandbox.
+
+= Use =
+
+For specific topics:
+
+  * To learn how to get things drawn on the screen: CreatingRenderObjects 
+  * To learn how process input: [http://code.google.com/p/tmcc-sandbox/wiki/Input Input]
+  * To learn about the data available to you: SandboxGlobals
+  * To learn how to use the camera: [http://code.google.com/p/tmcc-sandbox/wiki/Camera Camera]
+
+= FAQ =
+
+TODO: Answers to common questions and troubleshooting help

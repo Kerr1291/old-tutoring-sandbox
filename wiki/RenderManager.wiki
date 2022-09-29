@@ -1,0 +1,62 @@
+#summary Some info on the RenderManager
+
+= RenderManager =
+
+The RenderManager has a lot of stuff in it and can seem a little overwhelming at first glance. The only functions you should be concerned about for now are these:
+----
+{{{
+void SetWireframes(truth enabled);
+
+RenderObject* CreateCube(vec3* pos, mat4* rot, float* scale, const std::string& name = "");
+RenderObject* CreateBox(vec3* pos, mat4* rot, float* scale, float sx, float sy, float sz, const std::string& name = "");
+RenderObject* CreateSphere(vec3* pos, mat4* rot, float* scale, const std::string& name = "");
+RenderObject* CreateRenderObject(vec3* verts, unsigned _numVerts, unsigned* indices, unsigned _numIndices, const std::string& meshname,
+                                                        vec3* pos, mat4* rot, float* scale, const std::string& name = "");
+RenderObject* FindRenderObject(const std::string& nameToFind);
+truth RemoveRenderObject( RenderObject* objectToRemove );
+}}}
+
+So what do they do? Well, I will explain each one below.
+----
+{{{
+void SetWireframes(truth enabled);
+}}}
+This function enables the drawing of wireframes. If enabled it will always draw the wireframes on top of the objects, even when they are solid. You can increase your fps a bit by disabling this.
+----
+{{{
+RenderObject* CreateCube(vec3* pos, mat4* rot, float* scale, const std::string& name = "");
+RenderObject* CreateBox(vec3* pos, mat4* rot, float* scale, float sx, float sy, float sz, const std::string& name = "");
+RenderObject* CreateSphere(vec3* pos, mat4* rot, float* scale, const std::string& name = "");
+}}}
+These are the workhorse functions for you that you will probably be using the most. 
+
+Each of them must take *pointers* to a position vector, rotation matrix, and scale float (See below for more explanation on this).
+
+You also have the *option* to give them each a unqiue name. If you do not give an object a name you will be unable to look it up with a "Find" later.
+
+Finally, notice that the objects return a pointer to the newly created render object. You may use this for convenience, or if you did not give your object a name then it is the only way to have direct access to it after creation.
+----
+{{{
+RenderObject* CreateRenderObject(vec3* verts, unsigned _numVerts, unsigned* indices, unsigned _numIndices, const std::string& meshname,
+                                                        vec3* pos, mat4* rot, float* scale, const std::string& name = "");
+}}}
+*This function is not for beginners! *
+
+If you know how to create a vertex buffer and an index buffer needed by a triangle mesh then you may use this function to create a RenderObject that will draw your custom mesh.
+
+----
+{{{
+RenderObject* FindRenderObject(const std::string& nameToFind);
+}}}
+You may use this function to retrieve a pointer to a render object by providing the custom name you used when you created the object (assuming it exists). If the object is not found then 0 (null) is returned.
+----
+{{{
+truth RemoveRenderObject( RenderObject* objectToRemove );
+}}}
+This function will attempt to remove the render object stored at the address given from the system. If successful it returns 1, 0 if failure.
+
+Here is a quick example of how you would remove a render object:
+{{{
+RemoveRenderObject( FindRenderObject("steve") );
+}}}
+If steve is not found then null is passed to the remove function which will return 0.

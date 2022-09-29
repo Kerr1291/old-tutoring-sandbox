@@ -1,0 +1,136 @@
+#summary How to create objects that will be drawn on the screen.
+
+= RenderObjects =
+
+The sandbox uses what I call `RenderObjects` to draw things on screen. Here is what one looks like:
+
+{{{
+struct RenderObject
+{
+        friend class RenderManager;
+        friend class Camera;
+
+        RenderObject(GraphicData* g);
+        ~RenderObject();
+
+        void SetColor(vec4 rgba);
+        void SetColor(float r, float g, float b, float a = 1.0f);
+
+        truth visible;
+        truth solid;
+
+        private:
+
+        float* scale;
+        mat4* rot;
+        vec3* pos;
+       
+        vec4 color;
+        GraphicData* gfx;
+
+        std::string name;
+};
+}}}
+
+I want you to specially note the public fields. 
+{{{
+        truth visible;
+        truth solid;
+}}}
+These may be modified directly and safely with the expected desired result. If you set visible to 0 then the object will not be draw. If you set solid to 0 then you will only see the object's wireframe.
+
+The only functions you will be calling directly will probably be SetColor to change the object's color since creation should be done through the RengerManager (more on this next). The only other thing to notice is that all render objects must have *pointers* to scale, rotation, and position data. I will explain why and how this all works in a moment.
+
+= RenderManager =
+
+The RenderManager has a lot of stuff in it and can seem a little overwhelming at first glance. The only functions you should be concerned about for now are these:
+----
+{{{
+void SetWireframes(truth enabled);
+
+RenderObject* CreateCube(vec3* pos, mat4* rot, float* scale, const std::string& name = "");
+RenderObject* CreateBox(vec3* pos, mat4* rot, float* scale, float sx, float sy, float sz, const std::string& name = "");
+RenderObject* CreateSphere(vec3* pos, mat4* rot, float* scale, const std::string& name = "");
+RenderObject* CreateRenderObject(vec3* verts, unsigned _numVerts, unsigned* indices, unsigned _numIndices, const std::string& meshname,
+                                                        vec3* pos, mat4* rot, float* scale, const std::string& name = "");
+RenderObject* FindRenderObject(const std::string& nameToFind);
+truth RemoveRenderObject( RenderObject* objectToRemove );
+}}}
+
+So what do they do? Well, I will explain each one below.
+----
+{{{
+void SetWireframes(truth enabled);
+}}}
+This function enables the drawing of wireframes. If enabled it will always draw the wireframes on top of the objects, even when they are solid. You can increase your fps a bit by disabling this.
+----
+{{{
+RenderObject* CreateCube(vec3* pos, mat4* rot, float* scale, const std::string& name = "");
+RenderObject* CreateBox(vec3* pos, mat4* rot, float* scale, float sx, float sy, float sz, const std::string& name = "");
+RenderObject* CreateSphere(vec3* pos, mat4* rot, float* scale, const std::string& name = "");
+}}}
+These are the workhorse functions for you that you will probably be using the most. 
+
+Each of them must take *pointers* to a position vector, rotation matrix, and scale float (See below for more explanation on this).
+
+You also have the *option* to give them each a unqiue name. If you do not give an object a name you will be unable to look it up with a "Find" later.
+
+Finally, notice that the objects return a pointer to the newly created render object. You may use this for convenience, or if you did not give your object a name then it is the only way to have direct access to it after creation.
+----
+{{{
+RenderObject* CreateRenderObject(vec3* verts, unsigned _numVerts, unsigned* indices, unsigned _numIndices, const std::string& meshname,
+                                                        vec3* pos, mat4* rot, float* scale, const std::string& name = "");
+}}}
+*This function is not for beginners! *
+
+If you know how to create a vertex buffer and an index buffer needed by a triangle mesh then you may use this function to create a RenderObject that will draw your custom mesh.
+
+----
+{{{
+RenderObject* FindRenderObject(const std::string& nameToFind);
+}}}
+You may use this function to retrieve a pointer to a render object by providing the custom name you used when you created the object (assuming it exists). If the object is not found then 0 (null) is returned.
+----
+{{{
+truth RemoveRenderObject( RenderObject* objectToRemove );
+}}}
+This function will attempt to remove the render object stored at the address given from the system. If successful it returns 1, 0 if failure.
+
+Here is a quick example of how you would remove a render object:
+{{{
+RemoveRenderObject( FindRenderObject("steve") );
+}}}
+If steve is not found then null is passed to the remove function which will return 0.
+
+= Examples and Explanations =
+
+So as I noted several times, creating a render object requires passing in pointers to the needed data. This means that your data is *not* stored inside the RenderObject, but must be stored somewhere else (like maybe inside a physics object or something).
+
+The following is an example where I will create a sphere and change its color and move its position.
+{{{
+//in this example i will just make these static so they persist
+ static float scale = 1.0f;
+
+ static vec3 pos = vec3(0,0,0);
+               
+ static mat4 rot = mat4( vec4(1,0,0,0),
+                         vec4(0,1,0,0),
+                         vec4(0,0,1,0),
+                         vec4(0,0,0,1) );
+        
+
+ //make a sphere, we will call him bob
+ RenderObject* r = External::renderer->CreateSphere( &pos, &rot, &scale, "bob");
+ //since I changed the pos vector that bob is using, this "moves" bob
+ pos = vec3(0,0.5f,0);
+ //I can use the pointer I got from creating the object to change the color
+ r->SetColor(1,1,0,1);
+
+}}}
+There are some "gotchas" you must be aware of when doing things like this.
+
+For example, if the pointer that the RenderObject is using ever loses its data, the RenderObject will lose the data too. This will happen if you use something like an std::vector and are not careful. (See how the example Scene.cpp does it by allocating the space first and then using the pointers).
+
+----
+
+Well, that's it! Go forth and make things!
